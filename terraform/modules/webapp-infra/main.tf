@@ -12,58 +12,43 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "b1" {
-  bucket = "bucket1_${var.env}"
-}
-
-resource "aws_s3_bucket_acl" "b1_acl" {
-  bucket = aws_s3_bucket.b1.id
-  acl    = "private"
+  bucket = "${var.prefix}-bucket1-${var.env}"
 }
 
 resource "aws_s3_bucket" "b2" {
-  bucket = "bucket2_${var.env}"
-}
-
-resource "aws_s3_bucket_acl" "b2_acl" {
-  bucket = aws_s3_bucket.b2.id
-  acl    = "private"
+  bucket = "${var.prefix}-bucket2-${var.env}"
 }
 
 resource "aws_s3_bucket" "b3" {
-  bucket = "bucket2_${var.env}"
+  bucket = "${var.prefix}-bucket3-${var.env}"
 }
 
-resource "aws_s3_bucket_acl" "b3_acl" {
-  bucket = aws_s3_bucket.b3.id
-  acl    = "private"
-}
-
-locals {
-  s3_x_origin_id   = "invalid-origin"
+resource "aws_cloudfront_origin_access_control" "default" {
+  name                              = "iofinnet-exercise"
+  description                       = "iofinnet exercise"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_cloudfront_distribution" "this" {
   
   enabled = true
-
-  origin {
-    origin_id                = local.s3_x_origin_id
-    domain_name              = "domain.invalid"
-  }
   
   dynamic "origin" {
       for_each = var.settings
       iterator = setting
       content {
         origin_id                = "${setting.value.bucket}-origin"
-        domain_name              = "${setting.value.bucket}_${var.env}.s3-website-${var.region}.amazonaws.com"
+        domain_name              = "${var.prefix}-${setting.value.bucket}-${var.env}.s3.${var.region}.amazonaws.com"
+        origin_access_control_id = aws_cloudfront_origin_access_control.default.id
       }
   }
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = local.s3_x_origin_id
+    target_origin_id = "bucket1-origin"
 
     forwarded_values {
       query_string = false

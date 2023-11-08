@@ -1,6 +1,11 @@
 variable "region" {
   type = string
-  default = "ap-southeast-1"
+  default = "us-east-1"
+}
+
+variable "prefix" {
+  type = string
+  default = "xtesttest2x"
 }
 
 variable "env" {
