@@ -15,6 +15,69 @@ resource "aws_s3_bucket" "b1" {
   bucket = "${var.prefix}-bucket1-${var.env}"
 }
 
+resource "aws_s3_bucket_policy" "cdn-oac-bucket-policy-b1" {
+  bucket = aws_s3_bucket.b1.id
+  policy = data.aws_iam_policy_document.s3_bucket_policy_b1.json
+}
+
+resource "aws_s3_bucket_policy" "cdn-oac-bucket-policy-b2" {
+  bucket = aws_s3_bucket.b2.id
+  policy = data.aws_iam_policy_document.s3_bucket_policy_b2.json
+}
+
+resource "aws_s3_bucket_policy" "cdn-oac-bucket-policy-b3" {
+  bucket = aws_s3_bucket.b3.id
+  policy = data.aws_iam_policy_document.s3_bucket_policy_b3.json
+}
+
+data "aws_iam_policy_document" "s3_bucket_policy_b1" {
+  statement {
+    actions = [ "s3:GetObject" ]
+    resources = [ "${aws_s3_bucket.b1.arn}/*" ]
+    principals {
+      type = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+    condition {
+      test = "StringEquals"
+      variable = "AWS:SourceArn"
+      values = [aws_cloudfront_distribution.this.arn]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_bucket_policy_b2" {
+  statement {
+    actions = [ "s3:GetObject" ]
+    resources = [ "${aws_s3_bucket.b2.arn}/*" ]
+    principals {
+      type = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+    condition {
+      test = "StringEquals"
+      variable = "AWS:SourceArn"
+      values = [aws_cloudfront_distribution.this.arn]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "s3_bucket_policy_b3" {
+  statement {
+    actions = [ "s3:GetObject" ]
+    resources = [ "${aws_s3_bucket.b3.arn}/*" ]
+    principals {
+      type = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+    condition {
+      test = "StringEquals"
+      variable = "AWS:SourceArn"
+      values = [aws_cloudfront_distribution.this.arn]
+    }
+  }
+}
+
 resource "aws_s3_bucket" "b2" {
   bucket = "${var.prefix}-bucket2-${var.env}"
 }
