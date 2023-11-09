@@ -9,7 +9,9 @@ This project terraforms a Cloudfront distribution per each environment (dev, sta
 
 ## Key assumptions
 
- - There's no need of configuring encryption or ACL for the S3 bucket, as they come configure like this by default
+ - There's no need of configuring encryption or ACL for the S3 bucket, as they come configured like this by default
+ - Terraform backend is the default `local` 
+ - Access to Cloudfront is restricted by some specific countries
 
 ## How to run?
 
