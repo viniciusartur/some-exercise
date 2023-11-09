@@ -1,0 +1,6 @@
+dev:
+  hosts:
+    host1
+staging:
+  hosts:
+    host2

@@ -4,7 +4,7 @@ This project terraforms a Cloudfront distribution per each environment (dev, sta
 
 ## Design decisions
 
- - The distinct paths are defined in a single source of truth, which is moduesl/webapp-infra/variables.tf.
+ - The distinct paths are defined in a single source of truth, which is modules/webapp-infra/variables.tf.
  - It's relying on Terraform Modules and Dynamic blocks to ensure the DRY principle.
 
 ## Key assumptions

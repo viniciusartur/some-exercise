@@ -1,0 +1,6 @@
+---
+  - name: Ensure Docker Compose services are at the expected state
+    community.docker.docker_compose:
+      project_src: "{{ app_dir }}"
+      build: false
+      recreate: always

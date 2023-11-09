@@ -1,0 +1,5 @@
+tuning: "true"
+debug: "false"
+external_url: "https://staging/approve"
+client: "staging_client_external"
+device_id: 32443532

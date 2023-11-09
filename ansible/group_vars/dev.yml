@@ -1,0 +1,5 @@
+tuning: "true"
+debug: "true"
+external_url: "https://dev/approve"
+client: "dev_client_external"
+device_id: 2346456

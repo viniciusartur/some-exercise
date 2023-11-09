@@ -1,6 +1,7 @@
 ---
   - name: test
-    hosts: localhost
+    hosts: all
     connection: local
-    tasks:
-    - debug: msg=test
+    become: yes
+    roles:
+      - app

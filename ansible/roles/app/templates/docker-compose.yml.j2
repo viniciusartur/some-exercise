@@ -5,26 +5,26 @@ services:
     ports:
      - 8181
     environment:
-      - TUNING=true
-      - DEBUG=true
-      - EXTERNAL_URL="https://dev/approve"
-      - CLIENT="dev_client_external"
-      - INTERACTION_MODE="API"
-      - DEVICE_ID=2346456
+      - TUNING={{ tuning }}
+      - DEBUG={{ debug }}
+      - EXTERNAL_URL="{{ external_url }}"
+      - CLIENT="{{ client }}"
+      - INTERACTION_MODE="{{ interaction_mode }}"
+      - DEVICE_ID={{ device_id }}
     volumes:
       - secret-keys-volume:/data
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: {{ replicas }}
       resources:
         reservations:
-          cpus: '0.3'
-          memory: 1G
+          cpus: '{{ cpu }}'
+          memory: {{ memory }}
 
 volumes: 
   secret-keys-volume: 
     driver: local
     driver_opts:
-      o: "size=5G,uid=1000"
+      o: "size={{ disk_size }},uid=1000"
       device: tmpfs
       type: tmpfs
