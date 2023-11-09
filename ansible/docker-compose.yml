@@ -1,0 +1,30 @@
+services:
+  myapp:
+    image: python:3
+    command: ["python3", "-m", "http.server", "8181"]
+    ports:
+     - 8181
+    environment:
+      - TUNING=true
+      - DEBUG=true
+      - EXTERNAL_URL="https://dev/approve"
+      - CLIENT="dev_client_external"
+      - INTERACTION_MODE="API"
+      - DEVICE_ID=2346456
+    volumes:
+      - secret-keys-volume:/data
+    deploy:
+      mode: replicated
+      replicas: 3
+      resources:
+        reservations:
+          cpus: '0.3'
+          memory: 1G
+
+volumes: 
+  secret-keys-volume: 
+    driver: local
+    driver_opts:
+      o: "size=5G,uid=1000"
+      device: tmpfs
+      type: tmpfs
