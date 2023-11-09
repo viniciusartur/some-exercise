@@ -13,18 +13,9 @@ variable "env" {
 }
 
 variable "settings" {
-  default = [
-    {
-      path_pattern = "/auth/*"
-      bucket    = "bucket1"
-    },
-    {
-      path_pattern = "/info/*"
-      bucket    = "bucket2"
-    },
-    {
-      path_pattern = "/customers/*"
-      bucket    = "bucket3"
-    }
-  ]
+  default = {
+    bucket1 = "/auth/*"
+    bucket2 = "/info/*"
+    bucket3 = "/customers/*"
+  }
 }
